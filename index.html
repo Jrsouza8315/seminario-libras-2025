@@ -1,0 +1,512 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Seminário de Libras 2025 - IFBA Campus Simões Filho</title>
+    <meta name="description" content="Seminário de Libras 2025 - Promovendo a inclusão e acessibilidade através da Língua Brasileira de Sinais">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🤟</text></svg>">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- QR Code Library -->
+    <script src="https://cdn.jsdelivr.net/npm/qrcode@1.5.3/build/qrcode.min.js"></script>
+    
+    <!-- Supabase -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <nav class="nav-container">
+            <div class="nav-content">
+                <div class="logo">
+                    <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiByeD0iOCIgZmlsbD0iIzAwNjc0RCIvPgo8dGV4dCB4PSIxMDAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SUZCQTwvdGV4dD4KPHRleHQgeD0iMTAwIiB5PSYjMzQ7NjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNhbXB1cyBTaW3DtWVzIEZpbGhvPC90ZXh0Pgo8L3N2Zz4K" alt="IFBA Campus Simões Filho" class="logo-img">
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link">Início</a></li>
+                    <li><a href="#sobre" class="nav-link">Sobre</a></li>
+                    <li><a href="#programa" class="nav-link">Programa</a></li>
+                    <li><a href="#local" class="nav-link">Local</a></li>
+                    <li><a href="#inscricao" class="nav-link nav-cta">Inscrição</a></li>
+                </ul>
+                <div class="nav-toggle">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="hero">
+        <div class="hero-container">
+            <div class="hero-content">
+                <div class="hero-badge">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>15 de Março de 2025</span>
+                </div>
+                <h1 class="hero-title">
+                    Seminário de <span class="highlight">Libras</span> 2025
+                </h1>
+                <p class="hero-subtitle">
+                    Promovendo a inclusão e acessibilidade através da Língua Brasileira de Sinais
+                </p>
+                <div class="hero-info">
+                    <div class="info-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <span>IFBA Campus Simões Filho</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-clock"></i>
+                        <span>8h às 18h</span>
+                    </div>
+                    <div class="info-item">
+                        <i class="fas fa-users"></i>
+                        <span>Vagas Limitadas</span>
+                    </div>
+                </div>
+                <div class="hero-actions">
+                    <a href="#inscricao" class="btn btn-primary">
+                        <i class="fas fa-ticket-alt"></i>
+                        Inscrever-se
+                    </a>
+                    <a href="#programa" class="btn btn-secondary">
+                        <i class="fas fa-list"></i>
+                        Ver Programa
+                    </a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="hero-image">
+                    <i class="fas fa-hands-helping"></i>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="sobre" class="about">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Sobre o Evento</h2>
+                <p class="section-subtitle">Conectando pessoas através da comunicação inclusiva</p>
+            </div>
+            <div class="about-content">
+                <div class="about-text">
+                    <p>
+                        O Seminário de Libras 2025 é um evento dedicado à promoção da inclusão e acessibilidade 
+                        através da Língua Brasileira de Sinais. Reunindo especialistas, educadores, estudantes 
+                        e interessados na área, o evento oferece uma oportunidade única de aprendizado, 
+                        troca de experiências e networking.
+                    </p>
+                    <div class="features-grid">
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-graduation-cap"></i>
+                            </div>
+                            <h3>Palestras Especializadas</h3>
+                            <p>Conteúdo de qualidade com especialistas renomados na área de Libras</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-hands"></i>
+                            </div>
+                            <h3>Prática de Libras</h3>
+                            <p>Atividades práticas e interativas para desenvolver habilidades em Libras</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-network-wired"></i>
+                            </div>
+                            <h3>Networking</h3>
+                            <p>Conecte-se com profissionais e estudantes da área de inclusão</p>
+                        </div>
+                        <div class="feature-item">
+                            <div class="feature-icon">
+                                <i class="fas fa-certificate"></i>
+                            </div>
+                            <h3>Certificado</h3>
+                            <p>Certificado de participação válido para horas complementares</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Program Section -->
+    <section id="programa" class="program">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Programa do Evento</h2>
+                <p class="section-subtitle">Uma jornada completa de aprendizado e inclusão</p>
+            </div>
+            <div class="timeline">
+                <div class="timeline-item">
+                    <div class="timeline-time">08:00 - 08:30</div>
+                    <div class="timeline-content">
+                        <h3>Credenciamento</h3>
+                        <p>Retirada de materiais e confirmação de presença</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">08:30 - 09:00</div>
+                    <div class="timeline-content">
+                        <h3>Cerimônia de Abertura</h3>
+                        <p>Boas-vindas e apresentação do evento</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">09:00 - 10:30</div>
+                    <div class="timeline-content">
+                        <h3>Palestra: "Fundamentos da Libras"</h3>
+                        <p>Prof. Dr. Maria Silva - Introdução aos conceitos básicos da Língua Brasileira de Sinais</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">10:30 - 11:00</div>
+                    <div class="timeline-content">
+                        <h3>Coffee Break</h3>
+                        <p>Networking e interação entre participantes</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">11:00 - 12:30</div>
+                    <div class="timeline-content">
+                        <h3>Palestra: "Libras na Educação"</h3>
+                        <p>Prof. Dr. João Santos - Estratégias para inclusão de estudantes surdos</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">12:30 - 14:00</div>
+                    <div class="timeline-content">
+                        <h3>Almoço</h3>
+                        <p>Intervalo para almoço e networking</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">14:00 - 15:30</div>
+                    <div class="timeline-content">
+                        <h3>Workshop: "Prática de Libras"</h3>
+                        <p>Prof. Ana Costa - Atividades práticas e interativas</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">15:30 - 16:00</div>
+                    <div class="timeline-content">
+                        <h3>Coffee Break</h3>
+                        <p>Momento de descontração e troca de experiências</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">16:00 - 17:30</div>
+                    <div class="timeline-content">
+                        <h3>Palestra: "Tecnologia e Acessibilidade"</h3>
+                        <p>Prof. Dr. Carlos Lima - Novas tecnologias para inclusão digital</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="timeline-time">17:30 - 18:00</div>
+                    <div class="timeline-content">
+                        <h3>Encerramento</h3>
+                        <p>Considerações finais e entrega de certificados</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location Section -->
+    <section id="local" class="location">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Local do Evento</h2>
+                <p class="section-subtitle">IFBA Campus Simões Filho</p>
+            </div>
+            <div class="location-content">
+                <div class="location-info">
+                    <div class="location-details">
+                        <div class="detail-item">
+                            <i class="fas fa-map-marker-alt"></i>
+                            <div>
+                                <h3>Endereço</h3>
+                                <p>Rua da Paz, 123 - Centro<br>Simões Filho - BA, 43700-000</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-clock"></i>
+                            <div>
+                                <h3>Horário</h3>
+                                <p>15 de Março de 2025<br>Das 8h às 18h</p>
+                            </div>
+                        </div>
+                        <div class="detail-item">
+                            <i class="fas fa-car"></i>
+                            <div>
+                                <h3>Como Chegar</h3>
+                                <p>Estacionamento gratuito disponível<br>Fácil acesso por transporte público</p>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="https://maps.google.com/?q=IFBA+Campus+Simoes+Filho" target="_blank" class="btn btn-primary">
+                        <i class="fas fa-directions"></i>
+                        Ver no Google Maps
+                    </a>
+                </div>
+                <div class="location-map">
+                    <div class="map-placeholder">
+                        <i class="fas fa-map"></i>
+                        <p>Mapa Interativo</p>
+                        <a href="https://maps.google.com/?q=IFBA+Campus+Simoes+Filho" target="_blank" class="btn btn-secondary">
+                            Abrir Mapa
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Registration Section -->
+    <section id="inscricao" class="registration">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Inscrição</h2>
+                <p class="section-subtitle">Garanta sua vaga no Seminário de Libras 2025</p>
+            </div>
+            <div class="registration-content">
+                <div class="registration-info">
+                    <div class="info-card">
+                        <h3>Informações Importantes</h3>
+                        <ul>
+                            <li><i class="fas fa-check"></i> Inscrição gratuita</li>
+                            <li><i class="fas fa-check"></i> Vagas limitadas</li>
+                            <li><i class="fas fa-check"></i> Certificado incluso</li>
+                            <li><i class="fas fa-check"></i> Coffee break incluso</li>
+                            <li><i class="fas fa-check"></i> Material didático digital</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="registration-form">
+                    <form id="inscriptionForm" class="form">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="nome">Nome Completo *</label>
+                                <input type="text" id="nome" name="nome" required />
+                            </div>
+                            <div class="form-group">
+                                <label for="email">E-mail *</label>
+                                <input type="email" id="email" name="email" required />
+                            </div>
+                        </div>
+                        
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="telefone">Telefone</label>
+                                <input type="tel" id="telefone" name="telefone" />
+                            </div>
+                            <div class="form-group">
+                                <label for="instituicao">Instituição</label>
+                                <input type="text" id="instituicao" name="instituicao" />
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="area">Área de Atuação</label>
+                                <select id="area" name="area">
+                                    <option value="">Selecione uma opção</option>
+                                    <option value="educacao">Educação</option>
+                                    <option value="saude">Saúde</option>
+                                    <option value="tecnologia">Tecnologia</option>
+                                    <option value="servicos">Serviços</option>
+                                    <option value="outros">Outros</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="experiencia">Experiência com Libras</label>
+                                <select id="experiencia" name="experiencia">
+                                    <option value="">Selecione uma opção</option>
+                                    <option value="nenhuma">Nenhuma</option>
+                                    <option value="basica">Básica</option>
+                                    <option value="intermediaria">Intermediária</option>
+                                    <option value="avancada">Avançada</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Campo para estudantes -->
+                        <div class="form-group" id="estudante-group" style="display: none;">
+                            <label for="curso">Qual curso você está cursando? *</label>
+                            <input type="text" id="curso" name="curso" placeholder="Ex: Licenciatura em Matemática" />
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sexo">Sexo</label>
+                            <select id="sexo" name="sexo">
+                                <option value="">Selecione uma opção</option>
+                                <option value="feminino">Feminino</option>
+                                <option value="masculino">Masculino</option>
+                                <option value="nao_binario">Não-binário</option>
+                                <option value="transgenero">Transgênero</option>
+                                <option value="intersexo">Intersexo</option>
+                                <option value="outro">Outro</option>
+                                <option value="prefiro_nao_informar">Prefiro não informar</option>
+                            </select>
+                        </div>
+
+                        <!-- Acessibilidade -->
+                        <div class="form-group">
+                            <label>Acessibilidade e Necessidades Específicas</label>
+                            <div class="acessibilidade-options">
+                                <label class="radio-label">
+                                    <input type="radio" name="acessibilidade_tipo" value="nenhuma" checked>
+                                    <span class="radio-custom"></span>
+                                    Não preciso de recursos de acessibilidade
+                                </label>
+                                <label class="radio-label">
+                                    <input type="radio" name="acessibilidade_tipo" value="sim">
+                                    <span class="radio-custom"></span>
+                                    Sim, preciso de recursos de acessibilidade
+                                </label>
+                            </div>
+                            <div class="form-group" id="acessibilidade-detalhes" style="display: none;">
+                                <label for="acessibilidade_especifica">Especifique suas necessidades: *</label>
+                                <textarea id="acessibilidade_especifica" name="acessibilidade_especifica" placeholder="Ex: acesso para cadeirante, intérprete de LIBRAS, material em braile, etc." rows="3"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Autorizações -->
+                        <div class="form-group autorizacoes-section">
+                            <label class="section-label">Autorizações (Opcionais)</label>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="autoriza_imagem" name="autoriza_imagem" />
+                                    <span class="checkmark"></span>
+                                    Autorizo o uso da minha imagem em fotos e vídeos para divulgação institucional do evento
+                                </label>
+                            </div>
+                            <div class="checkbox-group">
+                                <label class="checkbox-label">
+                                    <input type="checkbox" id="newsletter" name="newsletter" />
+                                    <span class="checkmark"></span>
+                                    Desejo receber e-mails sobre futuros eventos e comunicações do IFBA Campus Simões Filho
+                                </label>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-primary btn-submit">
+                            <i class="fas fa-paper-plane"></i>
+                            Enviar Inscrição
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="footer-logo">
+                        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiB2aWV3Qm94PSIwIDAgMjAwIDgwIiBmaWxsPSJub25lIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciPgo8cmVjdCB3aWR0aD0iMjAwIiBoZWlnaHQ9IjgwIiByeD0iOCIgZmlsbD0iIzAwNjc0RCIvPgo8dGV4dCB4PSIxMDAiIHk9IjQ1IiBmb250LWZhbWlseT0iQXJpYWwsIHNhbnMtc2VyaWYiIGZvbnQtc2l6ZT0iMTQiIGZvbnQtd2VpZ2h0PSJib2xkIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSI+SUZCQTwvdGV4dD4KPHRleHQgeD0iMTAwIiB5PSYjMzQ7NjAiIGZvbnQtZmFtaWx5PSJBcmlhbCwgc2Fucy1zZXJpZiIgZm9udC1zaXplPSIxMCIgZmlsbD0id2hpdGUiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkNhbXB1cyBTaW3DtWVzIEZpbGhvPC90ZXh0Pgo8L3N2Zz4K" alt="IFBA Campus Simões Filho">
+                    </div>
+                    <p>Promovendo a inclusão e acessibilidade através da educação de qualidade.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Contato</h3>
+                    <div class="contact-info">
+                        <p><i class="fas fa-map-marker-alt"></i> Rua da Paz, 123 - Centro, Simões Filho - BA</p>
+                        <p><i class="fas fa-phone"></i> (71) 3396-0000</p>
+                        <p><i class="fas fa-envelope"></i> contato@ifba.edu.br</p>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Links Úteis</h3>
+                    <ul class="footer-links">
+                        <li><a href="#home">Início</a></li>
+                        <li><a href="#sobre">Sobre</a></li>
+                        <li><a href="#programa">Programa</a></li>
+                        <li><a href="#inscricao">Inscrição</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 IFBA Campus Simões Filho. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Confirmation Modal -->
+    <div id="confirmationModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>Inscrição Confirmada!</h2>
+                <button class="modal-close" id="closeModal">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="success-message">
+                    <i class="fas fa-check-circle"></i>
+                    <p>Sua inscrição foi realizada com sucesso!</p>
+                </div>
+                <div class="ticket-info">
+                    <h3>Seu Ingresso Virtual</h3>
+                    <div class="ticket-details">
+                        <div class="ticket-qr">
+                            <div id="qrCode"></div>
+                        </div>
+                        <div class="ticket-data">
+                            <div class="ticket-field">
+                                <strong>Nome:</strong> <span id="ticketName"></span>
+                            </div>
+                            <div class="ticket-field">
+                                <strong>Código:</strong> <span id="ticketCode"></span>
+                            </div>
+                            <div class="ticket-field">
+                                <strong>Data:</strong> <span id="ticketDate"></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-actions">
+                    <button class="btn btn-primary" id="downloadTicket">
+                        <i class="fas fa-download"></i>
+                        Baixar Ingresso
+                    </button>
+                    <button class="btn btn-secondary" id="closeModalBtn">
+                        <i class="fas fa-times"></i>
+                        Fechar
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay">
+        <div class="loading-spinner">
+            <i class="fas fa-spinner fa-spin"></i>
+            <p>Processando inscrição...</p>
+        </div>
+    </div>
+
+    <!-- Custom JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>

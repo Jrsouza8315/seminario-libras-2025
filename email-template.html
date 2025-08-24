@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Confirmação de Inscrição - II Seminário Acadêmico de LIBRAS</title>
+    <style>
+      body {
+        font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+        line-height: 1.6;
+        color: #333;
+        margin: 0;
+        padding: 0;
+        background-color: #f4f4f4;
+      }
+      .container {
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      .header {
+        background: linear-gradient(135deg, #1a4d2e 0%, #2d5a3d 100%);
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .header h1 {
+        margin: 0;
+        font-size: 24px;
+        font-weight: 600;
+      }
+      .header .subtitle {
+        margin-top: 10px;
+        font-size: 16px;
+        opacity: 0.9;
+      }
+      .content {
+        padding: 40px 30px;
+      }
+      .success-message {
+        background-color: #d4edda;
+        border: 1px solid #c3e6cb;
+        color: #155724;
+        padding: 20px;
+        border-radius: 8px;
+        margin-bottom: 30px;
+        text-align: center;
+      }
+      .success-message h2 {
+        margin: 0 0 10px 0;
+        color: #155724;
+      }
+      .event-details {
+        background-color: #f8f9fa;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .event-details h3 {
+        color: #1a4d2e;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+      .detail-row {
+        display: flex;
+        margin-bottom: 15px;
+        align-items: center;
+      }
+      .detail-icon {
+        width: 20px;
+        height: 20px;
+        background-color: #dc2626;
+        border-radius: 50%;
+        margin-right: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 12px;
+        font-weight: bold;
+      }
+      .detail-text {
+        flex: 1;
+        font-size: 16px;
+      }
+      .inscription-info {
+        background-color: #fff3cd;
+        border: 1px solid #ffeaa7;
+        border-radius: 8px;
+        padding: 25px;
+        margin-bottom: 30px;
+      }
+      .inscription-info h3 {
+        color: #856404;
+        margin-top: 0;
+        margin-bottom: 20px;
+        font-size: 18px;
+      }
+      .info-row {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 10px;
+        padding-bottom: 10px;
+        border-bottom: 1px solid #ffeaa7;
+      }
+      .info-row:last-child {
+        border-bottom: none;
+        margin-bottom: 0;
+      }
+      .info-label {
+        font-weight: 600;
+        color: #856404;
+      }
+      .info-value {
+        color: #333;
+      }
+      .qr-code-section {
+        text-align: center;
+        margin: 30px 0;
+        padding: 20px;
+        background-color: #f8f9fa;
+        border-radius: 8px;
+      }
+      .qr-code-placeholder {
+        width: 150px;
+        height: 150px;
+        background-color: #e9ecef;
+        border: 2px dashed #6c757d;
+        margin: 0 auto 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #6c757d;
+        font-size: 14px;
+        text-align: center;
+      }
+      .important-notes {
+        background-color: #fff3cd;
+        border-left: 4px solid #ffc107;
+        padding: 20px;
+        margin: 30px 0;
+      }
+      .important-notes h4 {
+        color: #856404;
+        margin-top: 0;
+        margin-bottom: 15px;
+      }
+      .important-notes ul {
+        margin: 0;
+        padding-left: 20px;
+      }
+      .important-notes li {
+        margin-bottom: 8px;
+        color: #856404;
+      }
+      .footer {
+        background-color: #1a4d2e;
+        color: white;
+        padding: 30px;
+        text-align: center;
+      }
+      .footer h4 {
+        margin-top: 0;
+        margin-bottom: 15px;
+        color: #ffffff;
+      }
+      .contact-info {
+        margin-bottom: 20px;
+      }
+      .contact-info p {
+        margin: 5px 0;
+        font-size: 14px;
+      }
+      .social-links {
+        margin-top: 20px;
+      }
+      .social-links a {
+        color: #ffffff;
+        text-decoration: none;
+        margin: 0 10px;
+        font-size: 14px;
+      }
+      .social-links a:hover {
+        text-decoration: underline;
+      }
+      .cta-button {
+        display: inline-block;
+        background-color: #dc2626;
+        color: white;
+        text-decoration: none;
+        padding: 15px 30px;
+        border-radius: 8px;
+        font-weight: 600;
+        margin: 20px 0;
+        transition: background-color 0.3s;
+      }
+      .cta-button:hover {
+        background-color: #b91c1c;
+      }
+      @media (max-width: 600px) {
+        .container {
+          margin: 0;
+          box-shadow: none;
+        }
+        .header,
+        .content,
+        .footer {
+          padding: 20px;
+        }
+        .detail-row {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+        .detail-icon {
+          margin-bottom: 10px;
+        }
+        .info-row {
+          flex-direction: column;
+        }
+        .info-label {
+          margin-bottom: 5px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <!-- Header -->
+      <div class="header">
+        <h1>II Seminário Acadêmico de LIBRAS</h1>
+        <div class="subtitle">
+          O Conhecimento nos torna mais tolerantes e a escuta nos transforma
+        </div>
+      </div>
+
+      <!-- Content -->
+      <div class="content">
+        <!-- Success Message -->
+        <div class="success-message">
+          <h2>✅ Inscrição Confirmada!</h2>
+          <p>Olá {{to_name}}, sua inscrição foi realizada com sucesso!</p>
+        </div>
+
+        <!-- Event Details -->
+        <div class="event-details">
+          <h3>📅 Detalhes do Evento</h3>
+          <div class="detail-row">
+            <div class="detail-icon">📅</div>
+            <div class="detail-text"><strong>Data:</strong> {{event_date}}</div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">📍</div>
+            <div class="detail-text">
+              <strong>Local:</strong> {{event_location}}
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">🏢</div>
+            <div class="detail-text">
+              <strong>Sala:</strong> Sala Audio 02 do pavilhão acadêmico
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">⏰</div>
+            <div class="detail-text">
+              <strong>Horário:</strong> 13h00 às 19h30
+            </div>
+          </div>
+        </div>
+
+        <!-- Inscription Info -->
+        <div class="inscription-info">
+          <h3>🎫 Sua Inscrição</h3>
+          <div class="info-row">
+            <span class="info-label">Nome:</span>
+            <span class="info-value">{{to_name}}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">E-mail:</span>
+            <span class="info-value">{{to_email}}</span>
+          </div>
+          <div class="info-row">
+            <span class="info-label">Código da Inscrição:</span>
+            <span class="info-value"
+              ><strong>{{inscription_code}}</strong></span
+            >
+          </div>
+          <div class="info-row">
+            <span class="info-label">Área de Atuação:</span>
+            <span class="info-value">{{area}}</span>
+          </div>
+          <div class="info-row" id="curso-row" style="display: none">
+            <span class="info-label">Curso:</span>
+            <span class="info-value">{{curso}}</span>
+          </div>
+        </div>
+
+        <!-- QR Code Section -->
+        <div class="qr-code-section">
+          <h3>📱 Seu QR Code</h3>
+          <div class="qr-code-placeholder">QR Code<br />Gerado</div>
+          <p>
+            <strong>Apresente este QR Code no credenciamento do evento</strong>
+          </p>
+        </div>
+
+        <!-- Important Notes -->
+        <div class="important-notes">
+          <h4>📋 Informações Importantes</h4>
+          <ul>
+            <li>
+              <strong>Chegue com 30 minutos de antecedência</strong> para o
+              credenciamento
+            </li>
+            <li>Apresente um documento com foto e o QR Code</li>
+            <li>O evento é <strong>gratuito</strong> e inclui coffee break</li>
+            <li>Certificado será entregue ao final do evento</li>
+            <li>Estacionamento gratuito disponível</li>
+          </ul>
+        </div>
+
+        <!-- Program Highlights -->
+        <div class="event-details">
+          <h3>🎯 Programação Destacada</h3>
+          <div class="detail-row">
+            <div class="detail-icon">🎤</div>
+            <div class="detail-text">
+              <strong>13:30 - 14:30:</strong> Introdução à Cultura Surda
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">📚</div>
+            <div class="detail-text">
+              <strong>14:30 - 15:30:</strong> LIBRAS: História e Evolução
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">☕</div>
+            <div class="detail-text">
+              <strong>15:30 - 16:00:</strong> Coffee Break
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">🎓</div>
+            <div class="detail-text">
+              <strong>16:00 - 17:00:</strong> Inclusão na Educação
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">💻</div>
+            <div class="detail-text">
+              <strong>17:00 - 18:00:</strong> Tecnologia e Acessibilidade
+            </div>
+          </div>
+          <div class="detail-row">
+            <div class="detail-icon">👥</div>
+            <div class="detail-text">
+              <strong>18:00 - 19:00:</strong> Mesa Redonda: Desafios e
+              Oportunidades
+            </div>
+          </div>
+        </div>
+
+        <!-- CTA Button -->
+        <div style="text-align: center">
+          <a
+            href="https://maps.google.com/?q=IFBA+Campus+Simões+Filho"
+            class="cta-button"
+            target="_blank"
+          >
+            🗺️ Como Chegar
+          </a>
+        </div>
+      </div>
+
+      <!-- Footer -->
+      <div class="footer">
+        <h4>Organização</h4>
+        <div class="contact-info">
+          <p><strong>IFBA - Campus Simões Filho</strong></p>
+          <p>Instituto Federal da Bahia</p>
+        </div>
+        <div class="contact-info">
+          <p>📧 seminario.libras@ifba.edu.br</p>
+          <p>📞 (71) 3396-0000</p>
+        </div>
+        <div class="social-links">
+          <a href="#" target="_blank">Facebook</a> |
+          <a href="#" target="_blank">Instagram</a> |
+          <a href="#" target="_blank">LinkedIn</a>
+        </div>
+        <p style="margin-top: 20px; font-size: 12px; opacity: 0.8">
+          © 2025 IFBA Campus Simões Filho. Todos os direitos reservados.
+        </p>
+      </div>
+    </div>
+  </body>
+</html>
