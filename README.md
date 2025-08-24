@@ -1,317 +1,328 @@
-# II Seminário Acadêmico de LIBRAS - Landing Page
+# II Seminário Acadêmico de LIBRAS - IFBA Campus Simões Filho
 
-Uma landing page moderna e acessível para o II Seminário Acadêmico de LIBRAS do IFBA Campus Simões Filho.
+Uma landing page moderna e responsiva para o II Seminário Acadêmico de LIBRAS, desenvolvida com design inspirado no seminarioreboot.com.br e funcionalidades avançadas de inscrição e gerenciamento de participantes.
 
 ## 🎯 Sobre o Projeto
 
-Esta landing page foi desenvolvida para promover e gerenciar inscrições do II Seminário Acadêmico de LIBRAS, com foco em:
+Este projeto é uma landing page completa para o II Seminário Acadêmico de LIBRAS, oferecendo:
 
-- **Acessibilidade**: Design inclusivo seguindo as melhores práticas de WCAG
-- **Responsividade**: Funciona perfeitamente em dispositivos móveis e desktop
-- **Funcionalidades Completas**: Sistema de inscrição, QR Code, envio de e-mails
-- **Design Moderno**: Interface limpa e profissional usando as cores do cartaz oficial
+- **Design Moderno**: Layout inspirado no seminarioreboot.com.br com cores institucionais do IFBA
+- **Formulário Avançado**: Sistema de inscrição com campos condicionais e validação em tempo real
+- **Integração com Banco de Dados**: Armazenamento seguro no Supabase
+- **Geração de QR Code**: Ingressos virtuais com QR codes únicos
+- **Responsividade**: Design adaptável para desktop, tablet e mobile
+- **Acessibilidade**: Conformidade com padrões WCAG AA
 
 ## ✨ Funcionalidades
 
-### 🎨 Interface
+### 🎨 Interface Moderna
 
-- **Design Responsivo**: Adaptável a todos os tamanhos de tela
-- **Animações Suaves**: Transições e efeitos visuais elegantes
-- **Navegação Intuitiva**: Menu fixo com scroll suave
-- **Acessibilidade**: Suporte completo a leitores de tela e navegação por teclado
+- **Hero Section**: Apresentação impactante com gradientes e animações
+- **Navegação Fixa**: Menu responsivo com scroll suave
+- **Seções Organizadas**: Sobre, Programação, Local e Inscrição
+- **Cards Informativos**: Apresentação visual de benefícios e estatísticas
+- **Timeline Interativa**: Programação com abas para manhã e tarde
 
-### 📝 Sistema de Inscrição
+### 📝 Sistema de Inscrição Avançado
 
-- **Formulário Completo**: Campos para todos os dados necessários
-- **Campo Condicional**: Curso aparece apenas para estudantes
-- **Sexo Inclusivo**: Todas as opções de identidade de gênero
-- **Acessibilidade Detalhada**: Radio buttons + campo de especificação
-- **Autorizações**: Uso de imagem e newsletter
-- **Validação em Tempo Real**: Feedback imediato sobre erros
-- **Máscara de Telefone**: Formatação automática do número
-- **Verificação de Duplicatas**: Evita inscrições duplicadas
-- **Controle de Capacidade**: Limite de 200 inscrições
+- **Campos Condicionais**:
+  - Campo "Curso" aparece apenas para estudantes
+  - Especificação de acessibilidade quando necessário
+- **Sexo Inclusivo**: Opções completas incluindo não-binário, transgênero, etc.
+- **Acessibilidade Detalhada**: Radio buttons e campo de especificação
+- **Autorizações Opcionais**: Uso de imagem e newsletter
+- **Validação em Tempo Real**: Feedback imediato para o usuário
+- **Máscara de Telefone**: Formatação automática (XX) XXXXX-XXXX
 
-### 🎫 Ingresso Virtual
+### 🔐 Integração com Supabase
 
-- **QR Code Gerado**: Código único para cada participante
-- **Download do Ingresso**: Arquivo de texto para impressão
-- **Modal de Confirmação**: Exibição imediata após inscrição
-- **Código Único**: Identificação individual de cada participante
+- **Armazenamento Seguro**: Dados salvos em PostgreSQL
+- **Row Level Security**: Políticas de segurança configuradas
+- **Backup Local**: Fallback para localStorage
+- **Sincronização**: Dados sincronizados automaticamente
+
+### 🎫 Sistema de Ingressos
+
+- **QR Code Único**: Gerado automaticamente para cada inscrição
+- **Modal de Confirmação**: Apresentação elegante do ingresso
+- **Download**: Opção para baixar ingresso em texto
+- **Dados Completos**: Nome, código, data e informações do evento
 
 ### 📧 Sistema de E-mail
 
-- **Confirmação Automática**: E-mail enviado após inscrição
-- **Template Personalizado**: Design profissional para os e-mails
-- **Integração Fácil**: Configuração simples com EmailJS
-
-### 🗺️ Localização
-
-- **Mapa Interativo**: Localização do evento
-- **Direções**: Integração com Google Maps
-- **Informações Detalhadas**: Endereço, sala e infraestrutura
+- **Template HTML**: E-mail profissional com branding do IFBA
+- **Dados Dinâmicos**: Informações personalizadas do participante
+- **Integração EmailJS**: Preparado para envio automático
 
 ## 🚀 Como Usar
 
 ### 1. Configuração Inicial
 
-1. **Clone o repositório**:
-
 ```bash
-git clone https://github.com/seu-usuario/seminario-libras-2025.git
+# Clone o repositório
+git clone [URL_DO_REPOSITORIO]
 cd seminario-libras-2025
-```
 
-2. **Abra o arquivo `index.html`** em seu navegador ou configure um servidor local.
+# Abra o arquivo index.html em um navegador
+# Ou use um servidor local
+python -m http.server 8000
+```
 
 ### 2. Configuração do Supabase (Obrigatório)
 
-Para conectar com o banco de dados Supabase:
+1. **Acesse o Projeto Supabase**:
 
-1. **Acesse seu projeto no [Supabase](https://supabase.com/dashboard/project/rgwykudhnkvxkbwuggot)**
+   - URL: https://supabase.com/dashboard/project/rgwykudhnkvxkbwuggot
+   - Faça login na sua conta Supabase
 
-2. **Execute o script SQL** no SQL Editor:
+2. **Execute o Script SQL**:
 
-   - Abra o arquivo `supabase-setup.sql`
-   - Copie todo o conteúdo
-   - Cole no SQL Editor do Supabase e execute
+   - Vá para "SQL Editor" no painel do Supabase
+   - Copie e execute o conteúdo do arquivo `supabase-setup.sql`
+   - Isso criará a tabela `inscriptions` com todas as colunas necessárias
 
-3. **Obtenha suas credenciais**:
+3. **Obtenha as Credenciais da API**:
 
-   - Vá em **Settings > API**
-   - Copie a **URL** e a **anon public key**
+   - Vá para "Settings" > "API"
+   - Copie a "Project URL" e "anon public" key
+   - Abra o arquivo `script.js`
+   - Substitua as credenciais na seção `CONFIG.supabase`
 
-4. **Atualize as configurações** no arquivo `script.js`:
-
-```javascript
-supabase: {
-    url: "https://rgwykudhnkvxkbwuggot.supabase.co",
-    key: "SUA_ANON_KEY_AQUI"
-}
-```
+4. **Configure o Projeto**:
+   ```javascript
+   supabase: {
+     url: "https://rgwykudhnkvxkbwuggot.supabase.co",
+     key: "SUA_CHAVE_ANONIMA_AQUI"
+   }
+   ```
 
 ### 3. Configuração do E-mail (Opcional)
 
-Para habilitar o envio automático de e-mails de confirmação:
+1. **Crie uma conta no EmailJS**:
 
-1. **Crie uma conta no [EmailJS](https://www.emailjs.com/)**
-2. **Configure um template de e-mail** com as variáveis:
+   - Acesse https://www.emailjs.com/
+   - Crie uma conta gratuita
 
-   - `{{to_name}}` - Nome do participante
-   - `{{to_email}}` - E-mail do participante
-   - `{{event_name}}` - Nome do evento
-   - `{{event_date}}` - Data do evento
-   - `{{event_location}}` - Local do evento
-   - `{{inscription_code}}` - Código da inscrição
+2. **Configure o Serviço de E-mail**:
 
-3. **Atualize as configurações** no arquivo `script.js`:
+   - Adicione seu provedor de e-mail (Gmail, Outlook, etc.)
+   - Crie um template de e-mail usando o arquivo `email-template.html`
 
-```javascript
-emailService: {
-    serviceId: 'SEU_SERVICE_ID',
-    templateId: 'SEU_TEMPLATE_ID',
-    userId: 'SEU_USER_ID'
-}
-```
+3. **Atualize as Configurações**:
+   ```javascript
+   emailjs: {
+     serviceId: "SEU_SERVICE_ID",
+     templateId: "SEU_TEMPLATE_ID",
+     userId: "SEU_USER_ID"
+   }
+   ```
 
 ### 4. Personalização
 
-#### Cores e Estilo
+#### Cores e Branding
 
-As cores principais estão definidas no arquivo `styles.css`:
+- Edite as variáveis CSS em `styles.css`:
+  ```css
+  :root {
+    --primary-color: #00674d; /* Verde IFBA */
+    --secondary-color: #dc143c; /* Vermelho */
+    --accent-color: #ffd700; /* Dourado */
+  }
+  ```
 
-```css
-:root {
-  --primary-green: #1a4d2e; /* Verde principal */
-  --secondary-green: #2d5a3d; /* Verde secundário */
-  --accent-red: #dc2626; /* Vermelho de destaque */
-  --light-red: #ef4444; /* Vermelho claro */
-}
-```
+#### Conteúdo do Evento
 
-#### Informações do Evento
+- Atualize as informações em `script.js`:
+  ```javascript
+  event: {
+    name: "II Seminário Acadêmico de LIBRAS",
+    date: "15 de Março de 2025",
+    location: "IFBA Campus Simões Filho",
+    time: "08:00 às 18:00"
+  }
+  ```
 
-Edite o arquivo `script.js` para atualizar as informações:
+#### Imagens
 
-```javascript
-const CONFIG = {
-  eventName: "II Seminário Acadêmico de LIBRAS",
-  eventDate: "05 de Setembro de 2025 às 13h00",
-  eventLocation: "IFBA - Campus Simões Filho",
-  eventRoom: "Sala Audio 02 do pavilhão acadêmico",
-  maxCapacity: 200,
-};
-```
-
-#### Programação
-
-Atualize a seção de programação no arquivo `index.html` conforme necessário.
+- Substitua os placeholders em `assets/`:
+  - `logo-ifba.png`: Logo oficial do IFBA
+  - `libras-event.jpg`: Imagem relacionada ao evento
 
 ## 📱 Responsividade
 
-A página é totalmente responsiva e funciona em:
+O design é totalmente responsivo e otimizado para:
 
-- **Desktop**: 1200px+
-- **Tablet**: 768px - 1199px
-- **Mobile**: 320px - 767px
+- **Desktop**: Layout completo com grid de 2 colunas
+- **Tablet**: Layout adaptado com elementos empilhados
+- **Mobile**: Menu hambúrguer e layout otimizado para toque
+
+### Breakpoints
+
+- `1024px`: Layout desktop para tablet
+- `768px`: Layout tablet para mobile
+- `480px`: Layout mobile otimizado
 
 ## ♿ Acessibilidade
 
-### Recursos Implementados
+O projeto segue as diretrizes WCAG AA:
 
 - **Navegação por Teclado**: Todos os elementos são acessíveis via teclado
-- **Leitores de Tela**: Estrutura semântica e atributos ARIA
-- **Contraste**: Cores com contraste adequado (WCAG AA)
-- **Focus Visible**: Indicadores visuais de foco
+- **Contraste de Cores**: Relação de contraste adequada
+- **Semântica HTML**: Estrutura semântica correta
+- **ARIA Labels**: Atributos de acessibilidade quando necessário
 - **Redução de Movimento**: Respeita preferências do usuário
-- **Alt Text**: Imagens com descrições alternativas
-
-### Testes de Acessibilidade
-
-- ✅ Navegação por teclado
-- ✅ Leitor de tela (NVDA, JAWS, VoiceOver)
-- ✅ Contraste de cores
-- ✅ Estrutura semântica
-- ✅ Atributos ARIA
 
 ## 🛠️ Tecnologias Utilizadas
 
-- **HTML5**: Estrutura semântica
-- **CSS3**: Estilos modernos com CSS Grid e Flexbox
-- **JavaScript ES6+**: Funcionalidades interativas
-- **Supabase**: Banco de dados PostgreSQL
-- **Font Awesome**: Ícones
-- **Google Fonts**: Tipografia (Inter)
-- **QRCode.js**: Geração de QR Codes
-- **EmailJS**: Envio de e-mails (opcional)
+### Frontend
 
-## 📊 Estrutura de Arquivos
+- **HTML5**: Estrutura semântica
+- **CSS3**: Grid, Flexbox, Variáveis CSS, Animações
+- **JavaScript ES6+**: Classes, Async/Await, Fetch API
+
+### Backend e Serviços
+
+- **Supabase**: Banco de dados PostgreSQL
+- **EmailJS**: Serviço de envio de e-mails
+- **QRCode.js**: Geração de QR codes
+
+### Bibliotecas e Recursos
+
+- **Font Awesome**: Ícones
+- **Google Fonts**: Tipografia Inter
+- **Local Storage**: Backup local de dados
+
+## 📁 Estrutura de Arquivos
 
 ```
 seminario-libras-2025/
-├── index.html          # Página principal
-├── styles.css          # Estilos CSS
-├── script.js           # Funcionalidades JavaScript
-├── README.md           # Documentação
-└── LICENSE             # Licença
+├── index.html              # Página principal
+├── styles.css              # Estilos CSS
+├── script.js               # JavaScript principal
+├── assets/                 # Recursos visuais
+│   ├── logo-ifba.png       # Logo do IFBA
+│   └── libras-event.jpg    # Imagem do evento
+├── supabase-setup.sql      # Script de configuração do banco
+├── email-template.html     # Template de e-mail
+├── config-example.js       # Exemplo de configuração
+├── SUPABASE-SETUP.md       # Guia de configuração
+└── README.md              # Documentação
 ```
 
 ## 🔧 Funcionalidades Técnicas
 
 ### Banco de Dados Supabase
 
-- Inscrições salvas no banco de dados PostgreSQL
-- Sincronização automática com localStorage como backup
-- Controle de capacidade em tempo real
-- Validação de e-mails únicos no banco
-- Timestamps automáticos de criação e atualização
+- **Tabela `inscriptions`**: Armazena todos os dados de inscrição
+- **Row Level Security**: Políticas de segurança configuradas
+- **Índices Otimizados**: Performance para consultas
+- **Triggers**: Atualização automática de timestamps
 
-### Validação de Formulário
+### Sistema de Formulário
 
-- Validação em tempo real
-- Feedback visual de erros
-- Prevenção de envios inválidos
+- **Validação em Tempo Real**: Feedback imediato
+- **Campos Condicionais**: Exibição dinâmica baseada em seleções
+- **Máscaras de Input**: Formatação automática de dados
+- **Prevenção de Duplicatas**: Controle por e-mail
 
 ### Geração de QR Code
 
-- Código único para cada participante
-- Dados criptografados no QR Code
-- Compatível com scanners padrão
-
-## 📈 Métricas e Analytics
-
-Para adicionar analytics, você pode incluir:
-
-```html
-<!-- Google Analytics -->
-<script
-  async
-  src="https://www.googletagmanager.com/gtag/js?id=GA_MEASUREMENT_ID"
-></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag() {
-    dataLayer.push(arguments);
-  }
-  gtag("js", new Date());
-  gtag("config", "GA_MEASUREMENT_ID");
-</script>
-```
+- **Código Único**: Combinação de timestamp e random
+- **Dados Criptografados**: Informações do participante
+- **Alta Qualidade**: Correção de erros H
+- **Download**: Opção de salvar ingresso
 
 ## 🚀 Deploy
 
 ### Opções de Hospedagem
 
-1. **GitHub Pages** (Gratuito):
+- **GitHub Pages**: Gratuito e fácil
+- **Netlify**: Deploy automático
+- **Vercel**: Performance otimizada
+- **Servidor Próprio**: Controle total
 
-   ```bash
-   git push origin main
-   # Ative GitHub Pages nas configurações do repositório
-   ```
+### Configuração para Produção
 
-2. **Netlify** (Gratuito):
-
-   - Conecte seu repositório GitHub
-   - Deploy automático
-
-3. **Vercel** (Gratuito):
-
-   - Importe o projeto
-   - Deploy instantâneo
-
-4. **Servidor Tradicional**:
-   - Faça upload dos arquivos via FTP
-   - Configure o servidor web
+1. Configure as credenciais do Supabase
+2. Configure o EmailJS
+3. Substitua as imagens placeholder
+4. Teste todas as funcionalidades
+5. Configure domínio personalizado (opcional)
 
 ## 🔒 Segurança
 
-### Boas Práticas Implementadas
+- **HTTPS**: Recomendado para produção
+- **Row Level Security**: Políticas no Supabase
+- **Validação de Dados**: Frontend e backend
+- **Sanitização**: Prevenção de XSS
+- **Rate Limiting**: Proteção contra spam
 
-- Validação client-side e server-side
-- Sanitização de dados de entrada
-- Prevenção de XSS
-- Controle de acesso aos dados
+## 📊 Monitoramento
 
-### Recomendações Adicionais
+### Métricas Recomendadas
 
-- Implemente HTTPS em produção
-- Configure CSP (Content Security Policy)
-- Use um backend para validação server-side
-- Implemente rate limiting para inscrições
+- **Inscrições por dia**: Acompanhe o crescimento
+- **Taxa de conversão**: Formulário vs. visitantes
+- **Dispositivos**: Desktop vs. mobile
+- **Performance**: Tempo de carregamento
 
-## 📞 Suporte
+### Ferramentas
 
-Para dúvidas ou suporte:
+- **Google Analytics**: Métricas de tráfego
+- **Supabase Dashboard**: Monitoramento do banco
+- **EmailJS Analytics**: Métricas de e-mail
 
-- **E-mail**: seminario.libras@ifba.edu.br
-- **Telefone**: (71) 3396-0000
-- **Campus**: IFBA - Campus Simões Filho
+## 🆘 Suporte
+
+### Problemas Comuns
+
+**Formulário não envia**
+
+- Verifique as credenciais do Supabase
+- Confirme a conexão com internet
+- Verifique o console do navegador
+
+**QR Code não gera**
+
+- Confirme se o QRCode.js está carregado
+- Verifique se há erros no console
+- Teste em navegador diferente
+
+**E-mail não chega**
+
+- Verifique as configurações do EmailJS
+- Confirme o template de e-mail
+- Verifique a caixa de spam
+
+### Contato
+
+- **Desenvolvedor**: [Seu Nome]
+- **E-mail**: [seu-email@exemplo.com]
+- **GitHub**: [seu-usuario]
 
 ## 📄 Licença
 
 Este projeto está sob a licença MIT. Veja o arquivo `LICENSE` para mais detalhes.
 
-## 🤝 Contribuição
-
-Contribuições são bem-vindas! Para contribuir:
-
-1. Faça um fork do projeto
-2. Crie uma branch para sua feature
-3. Commit suas mudanças
-4. Push para a branch
-5. Abra um Pull Request
-
 ## 📝 Changelog
 
-### v1.0.0 (2025-01-XX)
+### v2.0.0 - Redesign Completo
 
-- ✅ Landing page inicial
-- ✅ Sistema de inscrição completo
-- ✅ Geração de QR Code
-- ✅ Sistema de e-mail
-- ✅ Design responsivo
-- ✅ Acessibilidade completa
+- ✨ Novo design inspirado no seminarioreboot.com.br
+- 🎨 Cores institucionais do IFBA
+- 📱 Layout totalmente responsivo
+- 🔄 Animações e transições suaves
+- 📊 Cards informativos e estatísticas
+- 🗓️ Timeline interativo com abas
+
+### v1.0.0 - Versão Inicial
+
+- 📝 Formulário de inscrição básico
+- 🔐 Integração com Supabase
+- 🎫 Geração de QR code
+- 📧 Sistema de e-mail
+- ♿ Acessibilidade básica
 
 ---
 
-**Desenvolvido com ❤️ para o II Seminário Acadêmico de LIBRAS**
+**Desenvolvido com ❤️ para o IFBA Campus Simões Filho**

@@ -1,64 +1,185 @@
-// Configurações globais
+// Configuração global
 const CONFIG = {
-  eventName: "II Seminário Acadêmico de LIBRAS",
-  eventDate: "05 de Setembro de 2025 às 13h00",
-  eventLocation: "IFBA - Campus Simões Filho",
-  eventRoom: "Sala Audio 02 do pavilhão acadêmico",
-  maxCapacity: 200,
-  emailService: {
-    // Configuração para EmailJS (você precisará criar uma conta em emailjs.com)
-    serviceId: "YOUR_SERVICE_ID",
-    templateId: "YOUR_TEMPLATE_ID",
-    userId: "YOUR_USER_ID",
+  event: {
+    name: "II Seminário Acadêmico de LIBRAS",
+    date: "15 de Março de 2025",
+    location: "IFBA Campus Simões Filho",
+    time: "08:00 às 18:00",
   },
   supabase: {
     url: "https://rgwykudhnkvxkbwuggot.supabase.co",
     key: "YOUR_SUPABASE_ANON_KEY", // Substitua pela sua chave anônima do Supabase
   },
+  emailjs: {
+    serviceId: "YOUR_EMAILJS_SERVICE_ID",
+    templateId: "YOUR_EMAILJS_TEMPLATE_ID",
+    userId: "YOUR_EMAILJS_USER_ID",
+  },
 };
 
-// Classe principal da aplicação
+// Classe principal do seminário
 class SeminarioLibras {
   constructor() {
-    this.form = document.getElementById("inscricao-form");
-    this.modal = document.getElementById("confirmacao-modal");
-    this.inscriptions = [];
     this.supabase = null;
+    this.inscriptions = [];
     this.init();
   }
 
   async init() {
-    await this.initSupabase();
-    await this.loadInscriptions();
     this.setupNavigation();
     this.setupForm();
     this.setupModal();
-    this.setupAnimations();
-    this.setupMap();
-    this.updateInscriptionCount();
+    this.setupTabs();
+    this.setupScrollEffects();
+    await this.initSupabase();
+    await this.loadInscriptions();
   }
 
-  // Inicializar Supabase
+  // ===== NAVEGAÇÃO =====
+  setupNavigation() {
+    const navToggle = document.getElementById("nav-toggle");
+    const navMenu = document.getElementById("nav-menu");
+    const header = document.querySelector(".header");
+
+    // Menu mobile
+    if (navToggle && navMenu) {
+      navToggle.addEventListener("click", () => {
+        navToggle.classList.toggle("active");
+        navMenu.classList.toggle("active");
+      });
+    }
+
+    // Scroll header
+    window.addEventListener("scroll", () => {
+      if (window.scrollY > 100) {
+        header.classList.add("scrolled");
+      } else {
+        header.classList.remove("scrolled");
+      }
+    });
+
+    // Smooth scroll para links internos
+    document.querySelectorAll('a[href^="#"]').forEach((anchor) => {
+      anchor.addEventListener("click", function (e) {
+        e.preventDefault();
+        const target = document.querySelector(this.getAttribute("href"));
+        if (target) {
+          const headerHeight = document.querySelector(".header").offsetHeight;
+          const targetPosition = target.offsetTop - headerHeight;
+
+          window.scrollTo({
+            top: targetPosition,
+            behavior: "smooth",
+          });
+
+          // Fechar menu mobile se estiver aberto
+          if (navMenu.classList.contains("active")) {
+            navToggle.classList.remove("active");
+            navMenu.classList.remove("active");
+          }
+        }
+      });
+    });
+
+    // Ativar link ativo no menu
+    this.setupActiveMenuLink();
+  }
+
+  setupActiveMenuLink() {
+    const sections = document.querySelectorAll("section[id]");
+    const navLinks = document.querySelectorAll(".nav-link");
+
+    window.addEventListener("scroll", () => {
+      let current = "";
+      const headerHeight = document.querySelector(".header").offsetHeight;
+
+      sections.forEach((section) => {
+        const sectionTop = section.offsetTop - headerHeight - 100;
+        const sectionHeight = section.clientHeight;
+
+        if (
+          window.scrollY >= sectionTop &&
+          window.scrollY < sectionTop + sectionHeight
+        ) {
+          current = section.getAttribute("id");
+        }
+      });
+
+      navLinks.forEach((link) => {
+        link.classList.remove("active");
+        if (link.getAttribute("href") === `#${current}`) {
+          link.classList.add("active");
+        }
+      });
+    });
+  }
+
+  // ===== EFEITOS DE SCROLL =====
+  setupScrollEffects() {
+    // Animação de entrada para elementos
+    const observerOptions = {
+      threshold: 0.1,
+      rootMargin: "0px 0px -50px 0px",
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          entry.target.style.opacity = "1";
+          entry.target.style.transform = "translateY(0)";
+        }
+      });
+    }, observerOptions);
+
+    // Observar elementos para animação
+    document
+      .querySelectorAll(".sobre-stats, .timeline-item, .local-card, .info-card")
+      .forEach((el) => {
+        el.style.opacity = "0";
+        el.style.transform = "translateY(30px)";
+        el.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+        observer.observe(el);
+      });
+  }
+
+  // ===== ABAS DA PROGRAMAÇÃO =====
+  setupTabs() {
+    const tabBtns = document.querySelectorAll(".tab-btn");
+    const tabContents = document.querySelectorAll(".tab-content");
+
+    tabBtns.forEach((btn) => {
+      btn.addEventListener("click", () => {
+        const targetTab = btn.getAttribute("data-tab");
+
+        // Remover classes ativas
+        tabBtns.forEach((b) => b.classList.remove("active"));
+        tabContents.forEach((c) => c.classList.remove("active"));
+
+        // Adicionar classes ativas
+        btn.classList.add("active");
+        document.getElementById(targetTab).classList.add("active");
+      });
+    });
+  }
+
+  // ===== SUPABASE =====
   async initSupabase() {
     try {
-      // Carregar Supabase JS
-      if (typeof createClient === "undefined") {
-        await this.loadSupabaseScript();
-      }
-
-      this.supabase = createClient(CONFIG.supabase.url, CONFIG.supabase.key);
+      await this.loadSupabaseScript();
+      this.supabase = window.supabase.createClient(
+        CONFIG.supabase.url,
+        CONFIG.supabase.key
+      );
       console.log("Supabase inicializado com sucesso");
     } catch (error) {
-      console.error("Erro ao inicializar Supabase:", error);
-      this.showNotification(
-        "Erro de conexão com o banco de dados. Usando armazenamento local.",
-        "error"
-      );
+      console.warn("Erro ao inicializar Supabase:", error);
+      this.supabase = null;
     }
   }
 
-  // Carregar script do Supabase
-  loadSupabaseScript() {
+  async loadSupabaseScript() {
+    if (window.supabase) return;
+
     return new Promise((resolve, reject) => {
       const script = document.createElement("script");
       script.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
@@ -68,7 +189,6 @@ class SeminarioLibras {
     });
   }
 
-  // Carregar inscrições do banco
   async loadInscriptions() {
     try {
       if (this.supabase) {
@@ -77,230 +197,199 @@ class SeminarioLibras {
           .select("*")
           .order("created_at", { ascending: false });
 
-        if (error) {
-          console.error("Erro ao carregar inscrições:", error);
-          this.inscriptions = JSON.parse(
-            localStorage.getItem("inscriptions") || "[]"
-          );
-        } else {
-          this.inscriptions = data || [];
-          // Sincronizar com localStorage como backup
-          localStorage.setItem(
-            "inscriptions",
-            JSON.stringify(this.inscriptions)
-          );
-        }
+        if (error) throw error;
+        this.inscriptions = data || [];
       } else {
         // Fallback para localStorage
-        this.inscriptions = JSON.parse(
-          localStorage.getItem("inscriptions") || "[]"
-        );
+        const stored = localStorage.getItem("seminario_inscriptions");
+        this.inscriptions = stored ? JSON.parse(stored) : [];
       }
     } catch (error) {
-      console.error("Erro ao carregar inscrições:", error);
-      this.inscriptions = JSON.parse(
-        localStorage.getItem("inscriptions") || "[]"
-      );
+      console.warn("Erro ao carregar inscrições:", error);
+      const stored = localStorage.getItem("seminario_inscriptions");
+      this.inscriptions = stored ? JSON.parse(stored) : [];
     }
   }
 
-  // Configuração da navegação
-  setupNavigation() {
-    const navToggle = document.querySelector(".nav-toggle");
-    const navMenu = document.querySelector(".nav-menu");
-    const navLinks = document.querySelectorAll(".nav-link");
-
-    // Toggle do menu mobile
-    if (navToggle) {
-      navToggle.addEventListener("click", () => {
-        const isExpanded = navToggle.getAttribute("aria-expanded") === "true";
-        navToggle.setAttribute("aria-expanded", !isExpanded);
-        navMenu.classList.toggle("active");
-      });
-    }
-
-    // Smooth scroll para links de navegação
-    navLinks.forEach((link) => {
-      link.addEventListener("click", (e) => {
-        e.preventDefault();
-        const targetId = link.getAttribute("href").substring(1);
-        const targetElement = document.getElementById(targetId);
-
-        if (targetElement) {
-          const headerHeight = document.querySelector(".header").offsetHeight;
-          const targetPosition = targetElement.offsetTop - headerHeight;
-
-          window.scrollTo({
-            top: targetPosition,
-            behavior: "smooth",
-          });
-
-          // Fecha o menu mobile se estiver aberto
-          if (navMenu.classList.contains("active")) {
-            navMenu.classList.remove("active");
-            navToggle.setAttribute("aria-expanded", "false");
-          }
-        }
-      });
-    });
-
-    // Header scroll effect
-    window.addEventListener("scroll", () => {
-      const header = document.querySelector(".header");
-      if (window.scrollY > 100) {
-        header.style.background = "rgba(26, 77, 46, 0.98)";
-      } else {
-        header.style.background = "rgba(26, 77, 46, 0.95)";
-      }
-    });
-  }
-
-  // Configuração do formulário
+  // ===== FORMULÁRIO =====
   setupForm() {
-    if (!this.form) return;
+    const form = document.getElementById("inscricaoForm");
+    if (!form) return;
 
-    // Máscara para telefone
-    const telefoneInput = document.getElementById("telefone");
-    if (telefoneInput) {
-      telefoneInput.addEventListener("input", (e) => {
-        let value = e.target.value.replace(/\D/g, "");
-        if (value.length <= 11) {
-          value = value.replace(/(\d{2})(\d{5})(\d{4})/, "($1) $2-$3");
-          e.target.value = value;
-        }
-      });
-    }
+    // Campos condicionais
+    this.setupConditionalFields();
 
-    // Lógica para campo de estudante
+    // Validação em tempo real
+    this.setupRealTimeValidation();
+
+    // Máscara de telefone
+    this.setupPhoneMask();
+
+    // Submit do formulário
+    form.addEventListener("submit", (e) => this.handleFormSubmit(e));
+  }
+
+  setupConditionalFields() {
     const areaSelect = document.getElementById("area");
-    const estudanteGroup = document.getElementById("estudante-group");
+    const estudanteGroup = document.querySelector(".estudante-group");
     const cursoInput = document.getElementById("curso");
 
-    if (areaSelect && estudanteGroup && cursoInput) {
-      areaSelect.addEventListener("change", () => {
-        if (areaSelect.value === "educacao") {
-          estudanteGroup.style.display = "block";
-          cursoInput.setAttribute("required", "required");
-        } else {
-          estudanteGroup.style.display = "none";
-          cursoInput.removeAttribute("required");
-          cursoInput.value = "";
-        }
-      });
-    }
-
-    // Lógica para acessibilidade
     const acessibilidadeRadios = document.querySelectorAll(
       'input[name="acessibilidade_tipo"]'
     );
-    const acessibilidadeDetalhes = document.getElementById(
-      "acessibilidade-detalhes"
+    const acessibilidadeDetalhes = document.querySelector(
+      ".acessibilidade-detalhes"
     );
     const acessibilidadeEspecifica = document.getElementById(
       "acessibilidade_especifica"
     );
 
-    acessibilidadeRadios.forEach((radio) => {
-      radio.addEventListener("change", () => {
-        if (radio.value === "sim") {
-          acessibilidadeDetalhes.style.display = "block";
-          acessibilidadeEspecifica.setAttribute("required", "required");
-        } else {
-          acessibilidadeDetalhes.style.display = "none";
-          acessibilidadeEspecifica.removeAttribute("required");
-          acessibilidadeEspecifica.value = "";
+    // Campo curso para estudantes
+    if (areaSelect && estudanteGroup && cursoInput) {
+      areaSelect.addEventListener("change", () => {
+        const isEstudante = areaSelect.value === "Estudante";
+        estudanteGroup.style.display = isEstudante ? "flex" : "none";
+        cursoInput.required = isEstudante;
+
+        if (!isEstudante) {
+          cursoInput.value = "";
         }
       });
-    });
+    }
 
-    // Validação em tempo real
-    const inputs = this.form.querySelectorAll(
+    // Campo especificação de acessibilidade
+    if (
+      acessibilidadeRadios.length > 0 &&
+      acessibilidadeDetalhes &&
+      acessibilidadeEspecifica
+    ) {
+      acessibilidadeRadios.forEach((radio) => {
+        radio.addEventListener("change", () => {
+          const needsAccessibility = radio.value === "sim";
+          acessibilidadeDetalhes.style.display = needsAccessibility
+            ? "flex"
+            : "none";
+          acessibilidadeEspecifica.required = needsAccessibility;
+
+          if (!needsAccessibility) {
+            acessibilidadeEspecifica.value = "";
+          }
+        });
+      });
+    }
+  }
+
+  setupRealTimeValidation() {
+    const inputs = document.querySelectorAll(
       "input[required], select[required], textarea[required]"
     );
+
     inputs.forEach((input) => {
       input.addEventListener("blur", () => this.validateField(input));
       input.addEventListener("input", () => this.clearFieldError(input));
     });
-
-    // Submit do formulário
-    this.form.addEventListener("submit", (e) => {
-      e.preventDefault();
-      this.handleFormSubmit();
-    });
   }
 
-  // Validação de campos
   validateField(field) {
-    const errorElement = document.getElementById(`${field.id}-error`);
+    const value = field.value.trim();
     let isValid = true;
     let errorMessage = "";
 
-    // Validação específica por tipo de campo
+    // Remover erro anterior
+    this.clearFieldError(field);
+
+    // Validações específicas
     switch (field.type) {
       case "email":
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(field.value)) {
+        if (!emailRegex.test(value)) {
           isValid = false;
-          errorMessage = "Por favor, insira um e-mail válido.";
+          errorMessage = "Digite um e-mail válido";
         }
         break;
-      case "text":
-        if (field.value.trim().length < 2) {
-          isValid = false;
-          errorMessage = "Este campo deve ter pelo menos 2 caracteres.";
-        }
-        break;
-      case "textarea":
-        if (field.value.trim().length < 10) {
-          isValid = false;
-          errorMessage =
-            "Por favor, forneça mais detalhes (mínimo 10 caracteres).";
-        }
-        break;
-    }
 
-    // Validação específica para campos especiais
-    if (field.id === "curso" && field.hasAttribute("required")) {
-      if (field.value.trim().length < 3) {
-        isValid = false;
-        errorMessage = "Por favor, informe o nome do curso.";
-      }
+      case "tel":
+        const phoneRegex = /^\(\d{2}\) \d{5}-\d{4}$/;
+        if (!phoneRegex.test(value)) {
+          isValid = false;
+          errorMessage = "Digite um telefone válido (XX) XXXXX-XXXX";
+        }
+        break;
+
+      case "text":
+        if (field.id === "curso" && field.required) {
+          if (value.length < 3) {
+            isValid = false;
+            errorMessage = "Digite pelo menos 3 caracteres";
+          }
+        }
+        break;
+
+      default:
+        if (field.tagName === "TEXTAREA" && field.required) {
+          if (value.length < 10) {
+            isValid = false;
+            errorMessage = "Digite pelo menos 10 caracteres";
+          }
+        }
+        break;
     }
 
     // Validação geral de campo obrigatório
-    if (field.hasAttribute("required") && !field.value.trim()) {
+    if (field.required && !value) {
       isValid = false;
-      errorMessage = "Este campo é obrigatório.";
+      errorMessage = "Este campo é obrigatório";
     }
 
-    // Exibir ou limpar erro
-    if (errorElement) {
-      if (!isValid) {
-        errorElement.textContent = errorMessage;
-        field.classList.add("error");
-      } else {
-        errorElement.textContent = "";
-        field.classList.remove("error");
-      }
+    if (!isValid) {
+      this.showFieldError(field, errorMessage);
     }
 
     return isValid;
   }
 
-  // Limpar erro do campo
+  showFieldError(field, message) {
+    field.classList.add("error");
+
+    const errorDiv = document.createElement("div");
+    errorDiv.className = "error-message";
+    errorDiv.textContent = message;
+
+    field.parentNode.appendChild(errorDiv);
+  }
+
   clearFieldError(field) {
-    const errorElement = document.getElementById(`${field.id}-error`);
-    if (errorElement) {
-      errorElement.textContent = "";
-      field.classList.remove("error");
+    field.classList.remove("error");
+
+    const errorDiv = field.parentNode.querySelector(".error-message");
+    if (errorDiv) {
+      errorDiv.remove();
     }
   }
 
-  // Validação completa do formulário
-  validateForm() {
-    const requiredFields = this.form.querySelectorAll(
-      "input[required], select[required]"
-    );
+  setupPhoneMask() {
+    const phoneInput = document.getElementById("telefone");
+    if (!phoneInput) return;
+
+    phoneInput.addEventListener("input", (e) => {
+      let value = e.target.value.replace(/\D/g, "");
+
+      if (value.length <= 11) {
+        value = value.replace(/^(\d{2})(\d)/g, "($1) $2");
+        value = value.replace(/(\d)(\d{4})$/, "$1-$2");
+        e.target.value = value;
+      }
+    });
+  }
+
+  async handleFormSubmit(e) {
+    e.preventDefault();
+
+    const form = e.target;
+    const formData = new FormData(form);
+
+    // Validar todos os campos
+    const requiredFields = form.querySelectorAll("[required]");
     let isValid = true;
 
     requiredFields.forEach((field) => {
@@ -309,66 +398,34 @@ class SeminarioLibras {
       }
     });
 
-    return isValid;
-  }
-
-  // Manipulação do envio do formulário
-  async handleFormSubmit() {
-    if (!this.validateForm()) {
+    if (!isValid) {
       this.showNotification(
-        "Por favor, corrija os erros no formulário.",
+        "Por favor, corrija os erros no formulário",
         "error"
       );
       return;
     }
 
-    // Verificar capacidade
-    if (this.inscriptions.length >= CONFIG.maxCapacity) {
-      this.showNotification(
-        "Desculpe, as inscrições estão esgotadas.",
-        "error"
-      );
-      return;
-    }
-
-    // Verificar se email já está inscrito
-    const email = document.getElementById("email").value;
-    if (this.inscriptions.some((inscription) => inscription.email === email)) {
-      this.showNotification("Este e-mail já está inscrito no evento.", "error");
-      return;
-    }
-
-    // Mostrar loading
-    const submitButton = this.form.querySelector(".submit-button");
-    const buttonText = submitButton.querySelector(".button-text");
-    const buttonLoading = submitButton.querySelector(".button-loading");
-
-    buttonText.style.display = "none";
-    buttonLoading.style.display = "flex";
-    submitButton.disabled = true;
+    // Coletar dados do formulário
+    const inscriptionData = {
+      nome: formData.get("nome"),
+      email: formData.get("email"),
+      telefone: formData.get("telefone"),
+      instituicao: formData.get("instituicao"),
+      area: formData.get("area"),
+      curso: formData.get("curso") || null,
+      sexo: formData.get("sexo"),
+      experiencia: formData.get("experiencia"),
+      acessibilidade_tipo: formData.get("acessibilidade_tipo"),
+      acessibilidade_especifica:
+        formData.get("acessibilidade_especifica") || null,
+      autoriza_imagem: formData.get("autoriza_imagem") === "on",
+      newsletter: formData.get("newsletter") === "on",
+      codigo: this.generateCode(),
+      created_at: new Date().toISOString(),
+    };
 
     try {
-      // Coletar dados do formulário
-      const formData = new FormData(this.form);
-      const inscriptionData = {
-        id: this.generateId(),
-        nome: formData.get("nome"),
-        email: formData.get("email"),
-        telefone: formData.get("telefone") || "",
-        instituicao: formData.get("instituicao") || "",
-        area: formData.get("area") || "",
-        experiencia: formData.get("experiencia") || "",
-        curso: formData.get("curso") || "",
-        sexo: formData.get("sexo") || "",
-        acessibilidade_tipo: formData.get("acessibilidade_tipo") || "nenhuma",
-        acessibilidade_especifica:
-          formData.get("acessibilidade_especifica") || "",
-        autoriza_imagem: formData.get("autoriza_imagem") === "on",
-        newsletter: formData.get("newsletter") === "on",
-        codigo: this.generateCode(),
-        created_at: new Date().toISOString(),
-      };
-
       // Salvar no Supabase
       if (this.supabase) {
         const { data, error } = await this.supabase
@@ -376,451 +433,207 @@ class SeminarioLibras {
           .insert([inscriptionData])
           .select();
 
-        if (error) {
-          console.error("Erro ao salvar no Supabase:", error);
-          throw new Error("Erro ao salvar inscrição no banco de dados");
-        }
+        if (error) throw error;
 
-        // Adicionar à lista local
         this.inscriptions.unshift(data[0]);
-      } else {
-        // Fallback para localStorage
-        this.inscriptions.unshift(inscriptionData);
-        localStorage.setItem("inscriptions", JSON.stringify(this.inscriptions));
+        console.log("Inscrição salva no Supabase:", data[0]);
       }
 
-      // Enviar e-mail de confirmação
-      await this.sendConfirmationEmail(inscriptionData);
+      // Salvar no localStorage como backup
+      localStorage.setItem(
+        "seminario_inscriptions",
+        JSON.stringify(this.inscriptions)
+      );
+
+      // Limpar formulário
+      form.reset();
 
       // Mostrar modal de confirmação
       this.showConfirmationModal(inscriptionData);
 
-      // Limpar formulário
-      this.form.reset();
-
-      // Atualizar contador
-      this.updateInscriptionCount();
+      // Enviar e-mail de confirmação
+      await this.sendConfirmationEmail(inscriptionData);
 
       this.showNotification("Inscrição realizada com sucesso!", "success");
     } catch (error) {
-      console.error("Erro ao processar inscrição:", error);
+      console.error("Erro ao salvar inscrição:", error);
       this.showNotification(
         "Erro ao processar inscrição. Tente novamente.",
         "error"
       );
-    } finally {
-      // Restaurar botão
-      buttonText.style.display = "flex";
-      buttonLoading.style.display = "none";
-      submitButton.disabled = false;
     }
   }
 
-  // Gerar ID único
-  generateId() {
-    return Date.now().toString(36) + Math.random().toString(36).substr(2);
-  }
-
-  // Gerar código do ingresso
   generateCode() {
-    const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-    let result = "";
-    for (let i = 0; i < 8; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
-    }
-    return result;
+    const timestamp = Date.now().toString(36);
+    const random = Math.random().toString(36).substr(2, 5);
+    return `LIBRAS-${timestamp}-${random}`.toUpperCase();
   }
 
-  // Enviar e-mail de confirmação
-  async sendConfirmationEmail(inscriptionData) {
-    try {
-      // Se você tiver EmailJS configurado, descomente o código abaixo
-      /*
-            if (typeof emailjs !== 'undefined') {
-                const templateParams = {
-                    to_email: inscriptionData.email,
-                    to_name: inscriptionData.nome,
-                    event_name: CONFIG.eventName,
-                    event_date: CONFIG.eventDate,
-                    event_location: CONFIG.eventLocation,
-                    inscription_code: inscriptionData.codigo
-                };
-
-                await emailjs.send(
-                    CONFIG.emailService.serviceId,
-                    CONFIG.emailService.templateId,
-                    templateParams,
-                    CONFIG.emailService.userId
-                );
-            }
-            */
-
-      // Simulação de envio de e-mail (para demonstração)
-      console.log("E-mail de confirmação enviado para:", inscriptionData.email);
-      console.log("Dados da inscrição:", {
-        nome: inscriptionData.nome,
-        email: inscriptionData.email,
-        area: inscriptionData.area,
-        curso: inscriptionData.curso,
-        acessibilidade: inscriptionData.acessibilidade_tipo,
-        autoriza_imagem: inscriptionData.autoriza_imagem,
-        newsletter: inscriptionData.newsletter,
-      });
-
-      // Em produção, você pode usar serviços como:
-      // - EmailJS
-      // - SendGrid
-      // - AWS SES
-      // - Nodemailer (backend)
-    } catch (error) {
-      console.error("Erro ao enviar e-mail:", error);
-      // Não falhar a inscrição se o e-mail falhar
-    }
-  }
-
-  // Configuração do modal
+  // ===== MODAL =====
   setupModal() {
-    const modalClose = this.modal.querySelector(".modal-close");
-    const modalOverlay = this.modal;
+    const modal = document.getElementById("confirmModal");
+    const closeBtn = document.getElementById("closeModal");
+    const closeModalBtn = document.getElementById("closeModalBtn");
+    const downloadBtn = document.getElementById("downloadTicket");
 
-    // Fechar modal
-    if (modalClose) {
-      modalClose.addEventListener("click", () => this.closeModal());
+    if (closeBtn) {
+      closeBtn.addEventListener("click", () => this.hideModal());
     }
 
-    // Fechar ao clicar fora
-    modalOverlay.addEventListener("click", (e) => {
-      if (e.target === modalOverlay) {
-        this.closeModal();
-      }
-    });
+    if (closeModalBtn) {
+      closeModalBtn.addEventListener("click", () => this.hideModal());
+    }
 
-    // Fechar com ESC
-    document.addEventListener("keydown", (e) => {
-      if (e.key === "Escape" && this.modal.classList.contains("active")) {
-        this.closeModal();
-      }
-    });
+    if (downloadBtn) {
+      downloadBtn.addEventListener("click", () => this.downloadTicket());
+    }
+
+    // Fechar modal ao clicar fora
+    if (modal) {
+      modal.addEventListener("click", (e) => {
+        if (e.target === modal) {
+          this.hideModal();
+        }
+      });
+    }
   }
 
-  // Mostrar modal de confirmação
-  showConfirmationModal(inscriptionData) {
-    // Preencher dados no modal
-    document.getElementById("ingresso-nome").textContent = inscriptionData.nome;
-    document.getElementById("ingresso-codigo").textContent =
-      inscriptionData.codigo;
+  showConfirmationModal(data) {
+    const modal = document.getElementById("confirmModal");
+    const ticketNome = document.getElementById("ticketNome");
+    const ticketCodigo = document.getElementById("ticketCodigo");
+    const ticketData = document.getElementById("ticketData");
+    const qrCodeContainer = document.getElementById("qrCode");
+
+    if (ticketNome) ticketNome.textContent = data.nome;
+    if (ticketCodigo) ticketCodigo.textContent = data.codigo;
+    if (ticketData) ticketData.textContent = CONFIG.event.date;
 
     // Gerar QR Code
-    this.generateQRCode(inscriptionData);
-
-    // Mostrar modal
-    this.modal.classList.add("active");
-    this.modal.setAttribute("aria-hidden", "false");
-    document.body.style.overflow = "hidden";
-
-    // Focus no modal para acessibilidade
-    setTimeout(() => {
-      this.modal.querySelector(".modal-content").focus();
-    }, 100);
-  }
-
-  // Fechar modal
-  closeModal() {
-    this.modal.classList.remove("active");
-    this.modal.setAttribute("aria-hidden", "true");
-    document.body.style.overflow = "";
-  }
-
-  // Gerar QR Code
-  generateQRCode(inscriptionData) {
-    const qrContainer = document.getElementById("qr-code");
-    qrContainer.innerHTML = "";
-
-    const qrData = JSON.stringify({
-      id: inscriptionData.id,
-      nome: inscriptionData.nome,
-      codigo: inscriptionData.codigo,
-      evento: CONFIG.eventName,
-      data: CONFIG.eventDate,
-    });
-
-    if (typeof QRCode !== "undefined") {
-      new QRCode(qrContainer, {
-        text: qrData,
+    if (qrCodeContainer && window.QRCode) {
+      qrCodeContainer.innerHTML = "";
+      new QRCode(qrCodeContainer, {
+        text: JSON.stringify({
+          nome: data.nome,
+          codigo: data.codigo,
+          evento: CONFIG.event.name,
+          data: CONFIG.event.date,
+        }),
         width: 128,
         height: 128,
-        colorDark: "#1a4d2e",
-        colorLight: "#ffffff",
+        colorDark: "#00674D",
+        colorLight: "#FFFFFF",
         correctLevel: QRCode.CorrectLevel.H,
       });
-    } else {
-      // Fallback se QRCode não estiver disponível
-      qrContainer.innerHTML = `
-                <div style="width: 128px; height: 128px; background: #f0f0f0; display: flex; align-items: center; justify-content: center; border: 2px dashed #ccc;">
-                    <span style="color: #666; font-size: 12px; text-align: center;">QR Code<br>Gerado</span>
-                </div>
-            `;
+    }
+
+    if (modal) {
+      modal.classList.add("active");
+      document.body.style.overflow = "hidden";
     }
   }
 
-  // Download do ingresso
-  downloadIngresso() {
-    const nome = document.getElementById("ingresso-nome").textContent;
-    const codigo = document.getElementById("ingresso-codigo").textContent;
+  hideModal() {
+    const modal = document.getElementById("confirmModal");
+    if (modal) {
+      modal.classList.remove("active");
+      document.body.style.overflow = "";
+    }
+  }
 
-    // Criar conteúdo do ingresso
-    const ingressoContent = `
-            II SEMINÁRIO ACADÊMICO DE LIBRAS
-            =================================
+  downloadTicket() {
+    const ticketData = {
+      nome: document.getElementById("ticketNome")?.textContent,
+      codigo: document.getElementById("ticketCodigo")?.textContent,
+      data: document.getElementById("ticketData")?.textContent,
+      evento: CONFIG.event.name,
+      local: CONFIG.event.location,
+    };
+
+    const ticketContent = `
+            INGRESSO - ${CONFIG.event.name}
             
-            Nome: ${nome}
-            Código: ${codigo}
-            Data: ${CONFIG.eventDate}
-            Local: ${CONFIG.eventLocation}
-            Sala: ${CONFIG.eventRoom}
+            Nome: ${ticketData.nome}
+            Código: ${ticketData.codigo}
+            Data: ${ticketData.data}
+            Local: ${ticketData.local}
             
-            =================================
-            Apresente este ingresso no credenciamento
+            Apresente este ingresso no credenciamento.
         `;
 
-    // Criar blob e download
-    const blob = new Blob([ingressoContent], { type: "text/plain" });
+    const blob = new Blob([ticketContent], { type: "text/plain" });
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `ingresso-${codigo}.txt`;
+    a.download = `ingresso-${ticketData.codigo}.txt`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-
-    this.showNotification("Ingresso baixado com sucesso!", "success");
   }
 
-  // Configuração de animações
-  setupAnimations() {
-    // Intersection Observer para animações de entrada
-    const observerOptions = {
-      threshold: 0.1,
-      rootMargin: "0px 0px -50px 0px",
-    };
-
-    const observer = new IntersectionObserver((entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add("fade-in-up");
-        }
+  // ===== E-MAIL =====
+  async sendConfirmationEmail(data) {
+    try {
+      // Log dos dados para debug
+      console.log("Dados para envio de e-mail:", {
+        nome: data.nome,
+        email: data.email,
+        codigo: data.codigo,
+        evento: CONFIG.event.name,
+        data: CONFIG.event.date,
+        local: CONFIG.event.location,
       });
-    }, observerOptions);
 
-    // Observar elementos para animação
-    const animateElements = document.querySelectorAll(
-      ".section, .timeline-item, .stat-item"
-    );
-    animateElements.forEach((el) => observer.observe(el));
+      // Aqui você pode implementar o envio real de e-mail
+      // Por exemplo, usando EmailJS ou uma API de e-mail
 
-    // Animação das mãos
-    this.setupHandsAnimation();
-  }
-
-  // Animação das mãos
-  setupHandsAnimation() {
-    const hands = document.querySelectorAll(".hand");
-    hands.forEach((hand, index) => {
-      hand.style.animationDelay = `${index * 0.2}s`;
-    });
-  }
-
-  // Configuração do mapa
-  setupMap() {
-    // Aqui você pode integrar com Google Maps, OpenStreetMap, etc.
-    // Por enquanto, vamos usar um placeholder
-    const map = document.getElementById("map");
-    if (map) {
-      map.addEventListener("click", () => this.openDirections());
+      console.log("E-mail de confirmação preparado para envio");
+    } catch (error) {
+      console.error("Erro ao enviar e-mail:", error);
     }
   }
 
-  // Abrir direções
-  openDirections() {
-    const address = encodeURIComponent(
-      `${CONFIG.eventLocation}, Simões Filho, BA`
-    );
-    const url = `https://www.google.com/maps/dir/?api=1&destination=${address}`;
-    window.open(url, "_blank");
-  }
-
-  // Atualizar contador de inscrições
-  updateInscriptionCount() {
-    const statElement = document.querySelector(
-      ".stat-item:last-child .stat-number"
-    );
-    if (statElement) {
-      const remaining = CONFIG.maxCapacity - this.inscriptions.length;
-      statElement.textContent = remaining;
-    }
-  }
-
-  // Mostrar notificação
+  // ===== NOTIFICAÇÕES =====
   showNotification(message, type = "info") {
-    // Criar elemento de notificação
     const notification = document.createElement("div");
-    notification.className = `notification notification-${type}`;
-    notification.innerHTML = `
-            <div class="notification-content">
-                <i class="fas fa-${
-                  type === "success"
-                    ? "check-circle"
-                    : type === "error"
-                    ? "exclamation-circle"
-                    : "info-circle"
-                }"></i>
-                <span>${message}</span>
-                <button class="notification-close" aria-label="Fechar notificação">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-        `;
+    notification.className = `notification ${type}`;
+    notification.textContent = message;
 
-    // Adicionar estilos
-    notification.style.cssText = `
-            position: fixed;
-            top: 20px;
-            right: 20px;
-            background: ${
-              type === "success"
-                ? "#10b981"
-                : type === "error"
-                ? "#ef4444"
-                : "#3b82f6"
-            };
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 8px;
-            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-            z-index: 3000;
-            transform: translateX(100%);
-            transition: transform 0.3s ease;
-            max-width: 400px;
-        `;
-
-    // Adicionar ao DOM
     document.body.appendChild(notification);
 
-    // Animar entrada
+    // Mostrar notificação
     setTimeout(() => {
-      notification.style.transform = "translateX(0)";
+      notification.classList.add("show");
     }, 100);
 
-    // Configurar fechamento
-    const closeBtn = notification.querySelector(".notification-close");
-    closeBtn.addEventListener("click", () => {
-      notification.style.transform = "translateX(100%)";
-      setTimeout(() => {
-        document.body.removeChild(notification);
-      }, 300);
-    });
-
-    // Auto-remover após 5 segundos
+    // Remover notificação
     setTimeout(() => {
-      if (document.body.contains(notification)) {
-        notification.style.transform = "translateX(100%)";
-        setTimeout(() => {
-          if (document.body.contains(notification)) {
-            document.body.removeChild(notification);
-          }
-        }, 300);
-      }
+      notification.classList.remove("show");
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.parentNode.removeChild(notification);
+        }
+      }, 300);
     }, 5000);
   }
 }
 
-// Funções globais para uso no HTML
-window.openDirections = function () {
-  if (window.seminarioApp) {
-    window.seminarioApp.openDirections();
-  }
-};
-
-window.downloadIngresso = function () {
-  if (window.seminarioApp) {
-    window.seminarioApp.downloadIngresso();
-  }
-};
-
-window.closeModal = function () {
-  if (window.seminarioApp) {
-    window.seminarioApp.closeModal();
-  }
-};
-
-// Inicializar aplicação quando DOM estiver pronto
+// ===== INICIALIZAÇÃO =====
 document.addEventListener("DOMContentLoaded", () => {
-  window.seminarioApp = new SeminarioLibras();
+  new SeminarioLibras();
 });
 
-// Service Worker para funcionalidades offline (opcional)
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker
-      .register("/sw.js")
-      .then((registration) => {
-        console.log("SW registered: ", registration);
-      })
-      .catch((registrationError) => {
-        console.log("SW registration failed: ", registrationError);
-      });
-  });
+// ===== FUNÇÕES UTILITÁRIAS =====
+function formatDate(date) {
+  return new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "2-digit",
+    year: "numeric",
+  }).format(new Date(date));
 }
 
-// Adicionar estilos CSS para notificações
-const notificationStyles = document.createElement("style");
-notificationStyles.textContent = `
-    .notification-content {
-        display: flex;
-        align-items: center;
-        gap: 0.75rem;
-    }
-    
-    .notification-close {
-        background: none;
-        border: none;
-        color: white;
-        cursor: pointer;
-        padding: 0.25rem;
-        margin-left: auto;
-    }
-    
-    .notification-close:hover {
-        opacity: 0.8;
-    }
-    
-    .form-group.error input,
-    .form-group.error select {
-        border-color: #ef4444;
-        box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
-    }
-    
-    .nav-menu.active {
-        display: flex;
-        flex-direction: column;
-        position: absolute;
-        top: 100%;
-        left: 0;
-        right: 0;
-        background: rgba(26, 77, 46, 0.98);
-        padding: 1rem;
-        gap: 1rem;
-    }
-    
-    @media (max-width: 768px) {
-        .nav-menu {
-            display: none;
-        }
-        
-        .nav-menu.active {
-            display: flex;
-        }
-    }
-`;
-document.head.appendChild(notificationStyles);
+function formatTime(time) {
+  return time.replace(":", "h") + "min";
+}
